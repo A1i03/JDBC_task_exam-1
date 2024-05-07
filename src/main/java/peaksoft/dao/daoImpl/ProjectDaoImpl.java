@@ -19,7 +19,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 create table if not exists projects(
                 id serial primary key,
                 date start_date,
-                date end_dare
+                date end_dare)
                 """;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -44,7 +44,7 @@ public class ProjectDaoImpl implements ProjectDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return project;
     }
 
     @Override
@@ -54,10 +54,7 @@ public class ProjectDaoImpl implements ProjectDao {
             preparedStatement.setLong(1, id);
             preparedStatement.setDate(2, Date.valueOf(newProject.getStartDate()));
             preparedStatement.setDate(3, Date.valueOf(newProject.getEndDare()));
-            int i = preparedStatement.executeUpdate();
-            if (i > 0) {
-                System.out.println("Successfully updated");
-            } else System.out.println("Not found with id ");
+           preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -70,7 +67,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
-
+            preparedStatement.executeUpdate();
             int deleteUsers = preparedStatement.executeUpdate();
             if (deleteUsers > 0) {
                 System.out.println("Successfully deleted");

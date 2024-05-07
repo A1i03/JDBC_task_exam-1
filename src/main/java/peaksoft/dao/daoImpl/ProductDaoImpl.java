@@ -5,7 +5,9 @@ import peaksoft.dao.ProductDao;
 import peaksoft.models.Product;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class  ProductDaoImpl implements ProductDao  {
@@ -53,7 +55,7 @@ public class  ProductDaoImpl implements ProductDao  {
             preparedStatement.setLong(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                product.setId(resultSet.getLong("id"));
+                product.setId(id);
                 product.setName(resultSet.getString("name"));
                 product.setRating(resultSet.getString("rating"));
                 product.setPrice(resultSet.getInt("price"));
@@ -70,14 +72,11 @@ public class  ProductDaoImpl implements ProductDao  {
                 update products set name=?, rating=?, price = ? where id = ?
                 """;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setLong(1,newProduct.getId());
-            preparedStatement.setString(2,newProduct.getName());
-            preparedStatement.setString(3,newProduct.getRating());
-            preparedStatement.setInt(4,newProduct.getPrice());
-            int i = preparedStatement.executeUpdate();
-            if (i > 0) {
-                System.out.println("Successfully updated");
-            }else System.out.println("Not found with id ");
+            preparedStatement.setLong(4,id);
+            preparedStatement.setString(1,newProduct.getName());
+            preparedStatement.setString(2,newProduct.getRating());
+            preparedStatement.setInt(3,newProduct.getPrice());
+            preparedStatement.executeUpdate();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -99,8 +98,24 @@ public class  ProductDaoImpl implements ProductDao  {
     }
 
     @Override
-    public Product getLowRatingProducts(Long id) {
-        return null;
+    public List<Product> getLowRatingProducts() {
+        String sql = "select * from products order by price desc";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            List<Product> products = new ArrayList<>();
+            while (resultSet.next()) {
+                products.add(new Product(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("rating"),
+                        resultSet.getInt("price")
+                ));
+            }
+            return products;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -111,16 +126,7 @@ public class  ProductDaoImpl implements ProductDao  {
         try (PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setDouble(1,min_price);
             statement.setDouble(2,max_price);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                Product product = new Product();
-                int productId = resultSet.getInt("id");
-                product.setId(resultSet.getLong("id"));
-                product.setName(resultSet.getString("name"));
-                product.setRating(resultSet.getString("ranting"));
-                product.setPrice(resultSet.getInt("price"));
-                productsMap.put(productId,product);
-            }
+
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }

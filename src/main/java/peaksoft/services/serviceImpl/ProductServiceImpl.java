@@ -5,10 +5,17 @@ import peaksoft.dao.daoImpl.ProductDaoImpl;
 import peaksoft.models.Product;
 import peaksoft.services.ProductService;
 
+import java.util.List;
 import java.util.Map;
 
 public class ProductServiceImpl implements ProductService {
     ProductDao productDao = new ProductDaoImpl();
+
+    @Override
+    public void createProductTable() {
+    productDao.createProductTable();
+    }
+
     @Override
     public String addProduct(Product Product) {
         return productDao.addProduct(Product);
@@ -31,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getLowRatingProducts(Long id) {
-        return productDao.getLowRatingProducts(id);
+    public List<Product> getLowRatingProducts() {
+        return productDao.getLowRatingProducts();
     }
 
     @Override

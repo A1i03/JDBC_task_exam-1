@@ -16,4 +16,9 @@ public class Product {
     private String rating;
     private int price;
 
+    public Product(String name, String rating, int price) {
+        this.name = name;
+        this.rating = rating;
+        this.price = price;
+    }
 }

@@ -37,7 +37,6 @@ public class CourseDaoImpl implements CourseDao {
             preparedStatement.setLong(1,CourseId);
             ResultSet resultSet  = preparedStatement.executeQuery();
             while (resultSet.next()){
-                course.setId(resultSet.getLong("Id"));
                 course.setName(resultSet.getString("name"));
                 course.setDescription(resultSet.getString("description"));
                 course.setDuration(resultSet.getInt("duration"));
@@ -58,10 +57,7 @@ public class CourseDaoImpl implements CourseDao {
             preparedStatement.setString(2,newcourse.getDescription());
             preparedStatement.setInt(3,newcourse.getDuration());
             preparedStatement.setLong(4,id);
-            int i = preparedStatement.executeUpdate();
-            if (i > 0) {
-                System.out.println("Successfully updated");
-            }else System.out.println("Not found with id ");
+           preparedStatement.executeUpdate();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }

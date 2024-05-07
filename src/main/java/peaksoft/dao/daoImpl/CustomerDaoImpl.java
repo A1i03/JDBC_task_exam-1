@@ -39,11 +39,11 @@ public class CustomerDaoImpl implements CustomerDao {
             preparedStatement.setString(2, customer.getLastName());
             preparedStatement.setString(3, customer.getPhoneNumber());
             preparedStatement.executeUpdate();
-            System.out.println("Successfully saved!");
+            return "Successfully saved!";
         } catch (SQLException e) {
-            System.out.println("Error: "+e.getMessage());
+            return "Error: "+e.getMessage();
         }
-        return null;
+
     }
 
     @Override
@@ -69,12 +69,12 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public String updateCustomerPhoneNumber(Long id, String phoneNUmber) {
+    public String updateCustomerById(Long id, Customer newCustomer) {
         String sql = """
             update customers set phone_number = ? where id = ?
             """;
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setString(1,phoneNUmber);
+            preparedStatement.setString(1, String.valueOf(newCustomer));
             preparedStatement.setLong(2,id);
             preparedStatement.executeUpdate();
             System.out.println("Success updates");

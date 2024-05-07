@@ -12,7 +12,7 @@ public class DataBaseJdbc {
                     "postgres",
                     "1234"
             );
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }

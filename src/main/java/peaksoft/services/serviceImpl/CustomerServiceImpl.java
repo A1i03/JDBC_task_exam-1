@@ -25,8 +25,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String updateCustomerPhoneNumber(Long id, String phoneNUmber) {
-        return customerDao.updateCustomerPhoneNumber(id,phoneNUmber);
+    public String updateCustomerById(Long id, Customer newCustomer) {
+        return customerDao.updateCustomerById(id,newCustomer);
     }
 
     @Override

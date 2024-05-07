@@ -7,6 +7,12 @@ import peaksoft.services.UserService;
 
 public class UserServiceImpl implements UserService {
     UserDao userDao = new UserDaoImpl();
+
+    @Override
+    public String addUser(User user) {
+        return userDao.addUser(user);
+    }
+
     @Override
     public void createUserTable() {
         userDao.createUserTable();
